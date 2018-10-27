@@ -1,0 +1,39 @@
+version: '2'
+services:
+  master:
+    build: .
+    container_name: master
+    command:
+      - roscore
+    environment:
+      - "ROS_IP=172.19.0.100"
+    networks:
+      ros_net:
+        ipv4_address: 172.19.0.100
+    ports:
+      - "11311:11311"
+      - "33690:33690"
+
+services:
+  master:
+    build: .
+    container_name: turtlebot3_remote
+    command:
+      - source devel/setup.bash
+      - roslaunch turtlebot3_bringup turtlebot3_remote.launch
+    environment:
+      - "ROS_IP=172.19.0.101"
+      - "ROS_MASTER_URI=http://172.19.0.100:11311"
+    networks:
+      ros_net:
+        ipv4_address: 172.19.0.101
+
+
+networks:
+  ros_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.19.0.0/24
+        gateway: 172.19.0.1
