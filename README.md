@@ -27,9 +27,11 @@ openCRと接続する時
 ## docker networkを作成
 docker network create rosnet
 
+# 実際にTurtleBot3を動かす場合
+組み立てたTurtleBotのopenCRとUSBで接続
+
 ## master起動
 docker run -it --rm --net rosnet --name master ros:ros-turtlebot3 roscore
-
 
 ## roslanuch
 docker run -it --rm --net rosnet --name talker --env ROS_HOSTNAME=remote --env ROS_MASTER_URI=http://master:11311 ros:ros-turtlebot3 roslaunch turtlebot3_bringup turtlebot3_remote.launch
